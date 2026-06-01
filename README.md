@@ -6,9 +6,8 @@ Dockerized **nginx** reverse proxy with **HTTPS** for a two-service stack: a web
 
 | Listener | Protocol | Upstream (Docker DNS) |
 |----------|----------|---------------------|
-| `443` | HTTPS | `frm-web:3000` |
-| `8443` | HTTPS | `frm-api:8000` |
-| `80` | HTTP | Redirects to HTTPS |
+| `1443` | HTTPS | `frm-web:3000` |
+| `18443` | HTTPS | `frm-api:8000` |
 
 On first start, the container generates a **self-signed TLS certificate** for the IP you provide via `FRM_VM_IP`. Browsers will show a certificate warning until you trust the cert or replace it with one from your CA.
 

@@ -8,9 +8,8 @@ services:
     image: frm-nginx:local
     container_name: frm-nginx
     ports:
-      - "80:80"
-      - "443:443"
-      - "8443:8443"
+      - "1443:1443"
+      - "18443:18443"
     environment:
       FRM_VM_IP: ${FRM_VM_IP:?FRM_VM_IP is required}
     networks:
