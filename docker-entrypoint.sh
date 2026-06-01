@@ -3,13 +3,13 @@ set -eu
 
 IP="${FRM_VM_IP:-}"
 if [ -z "$IP" ]; then
-  echo "ERROR: Set FRM_VM_IP in Portainer (your VM IP on VPN), e.g. FRM_VM_IP=<VM_IP>"
+  echo "ERROR: FRM_VM_IP is required (IP address for the TLS certificate)."
   exit 1
 fi
 
 mkdir -p /etc/nginx/ssl
 if [ ! -f /etc/nginx/ssl/cert.pem ]; then
-  echo "Generating self-signed certificate for IP ${IP} ..."
+  echo "Generating self-signed certificate for ${IP} ..."
   openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/key.pem \
     -out /etc/nginx/ssl/cert.pem \

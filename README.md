@@ -1,64 +1,64 @@
-# frm-nginx — Portainer only (no VM SSH)
+# frm-nginx
 
-**Repo:** https://github.com/soheilbh/frm-nginx
+Dockerized **nginx** reverse proxy with **HTTPS** for a two-service stack: a web frontend and a REST API.
 
-You only need **Portainer** + **Git** (GitLab or private GitHub). No shell on the VM, no `/opt` folders.
+## What it does
 
-The image **builds nginx config inside Docker** and **creates the TLS cert on first start** from `FRM_VM_IP`.
+| Listener | Protocol | Upstream (Docker DNS) |
+|----------|----------|---------------------|
+| `443` | HTTPS | `frm-web:3000` |
+| `8443` | HTTPS | `frm-api:8000` |
+| `80` | HTTP | Redirects to HTTPS |
 
-| URL | Backend (when frm-ai is running) |
-|-----|----------------------------------|
-| `https://<VM_IP>` | `frm-web:3000` |
-| `https://<VM_IP>:8443` | `frm-api:8000` |
+On first start, the container generates a **self-signed TLS certificate** for the IP you provide via `FRM_VM_IP`. Browsers will show a certificate warning until you trust the cert or replace it with one from your CA.
 
----
+## Requirements
 
-## Portainer — new stack (Git)
+- Docker with Compose v2
+- Upstream containers `frm-web` and `frm-api` on the **same Docker network** as this service
+- One environment variable: **`FRM_VM_IP`** — IP address used as the certificate Common Name and Subject Alternative Name (typically the host reachable by clients)
 
-| Field | Value |
-|--------|--------|
-| **Name** | `frm-nginx` |
-| **Build method** | **Git repository** |
-| **Repository URL** | `https://github.com/soheilbh/frm-nginx` |
-| **Repository reference** | `main` (your branch) |
-| **Compose path** | `docker-compose.yml` |
-| **Authentication** | Token if private repo |
+## Run
 
-### Environment variables (required)
+```bash
+export FRM_VM_IP=<host-ip>
+docker compose up -d --build
+```
 
-| Name | Value |
-|------|--------|
-| `FRM_VM_IP` | Your VM IP on VPN (set in Portainer only — do not commit) |
+Or pass the variable inline:
 
-Nothing else required.
+```bash
+FRM_VM_IP=<host-ip> docker compose up -d --build
+```
 
-### Deploy
+## Environment
 
-Turn **Deploy** on. Portainer will **build** the image on the VM (needs internet to pull `nginx:1.27-alpine` once).
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `FRM_VM_IP` | Yes | IP address for the self-signed certificate |
 
----
+## Docker network
 
-## After deploy
+Compose defines network `frm_ai_frm-ai-network`. Other stacks can attach to it as an external network so nginx can reach the upstream services by name.
 
-- Container `frm-nginx` running
-- Network `frm_ai_frm-ai-network` created
-- `https://<VM_IP>` works (cert warning once — self-signed)
-- **502** until frm-ai stack is deployed later — normal
+## Files
 
----
+| File | Purpose |
+|------|---------|
+| `Dockerfile` | nginx image with bundled config and entrypoint |
+| `nginx.conf` | Reverse proxy rules |
+| `docker-entrypoint.sh` | Creates TLS cert if missing, then starts nginx |
+| `generate-certs.sh` | Optional: generate cert/key files locally (not used by the default image flow) |
 
-## Clerk (when app is ready)
+## Optional: generate certificates locally
 
-Set application URL to `https://<VM_IP>`.
+```bash
+./generate-certs.sh <host-ip>
+```
 
----
+Writes `ssl/cert.pem` and `ssl/key.pem`. The default container path generates certs inside the container at runtime instead.
 
-## No Git in Portainer?
+## Notes
 
-Portainer **Web editor** cannot build this image unless your Portainer also has the Dockerfile context. Use **Git** (GitLab/GitHub) — simplest for Portainer-only access.
-
----
-
-## Local Mac
-
-Not required. This stack is for **remote Portainer** only.
+- Self-signed certificates are suitable for internal or VPN-only access, not public internet trust.
+- If upstream services are not running, nginx will return **502 Bad Gateway** — expected until they are up.
