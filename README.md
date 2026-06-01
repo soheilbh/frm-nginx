@@ -60,5 +60,5 @@ Writes `ssl/cert.pem` and `ssl/key.pem`. The default container path generates ce
 
 ## Notes
 
-- Self-signed certificates are suitable for internal or VPN-only access, not public internet trust.
+- Self-signed certificates are suitable for internal or private networks, not public internet trust.
 - If upstream services are not running, nginx will return **502 Bad Gateway** — expected until they are up.
