@@ -3,7 +3,7 @@ set -eu
 
 IP="${FRM_VM_IP:-}"
 if [ -z "$IP" ]; then
-  echo "ERROR: Set FRM_VM_IP in Portainer (your VM IP on VPN), e.g. FRM_VM_IP=10.52.10.50"
+  echo "ERROR: Set FRM_VM_IP in Portainer (your VM IP on VPN), e.g. FRM_VM_IP=<VM_IP>"
   exit 1
 fi
 

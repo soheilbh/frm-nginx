@@ -2,7 +2,7 @@
 #
 # Portainer → Stacks → Add stack → Git repository
 #   Compose path: docker-compose.yml
-#   Environment: FRM_VM_IP=10.52.10.50  (your VM IP)
+#   Environment: FRM_VM_IP=<VM_IP>  (set in Portainer)
 #
 # Deploy BEFORE frm-ai (creates network frm_ai_frm-ai-network).
 

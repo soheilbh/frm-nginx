@@ -28,7 +28,7 @@ The image **builds nginx config inside Docker** and **creates the TLS cert on fi
 
 | Name | Value |
 |------|--------|
-| `FRM_VM_IP` | Your VM IP on VPN, e.g. `10.52.10.192` |
+| `FRM_VM_IP` | Your VM IP on VPN (set in Portainer only — do not commit) |
 
 Nothing else required.
 

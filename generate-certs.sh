@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Optional: generate certs on a machine with openssl (not needed for Portainer deploy).
-# Usage:  ./generate-certs.sh 10.52.10.50
+# Usage:  ./generate-certs.sh <VM_IP>
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,7 +9,7 @@ IP="${1:-}"
 
 if [[ -z "${IP}" ]]; then
   echo "Usage: $0 <VM_IP>"
-  echo "Example: $0 10.52.10.50"
+  echo "Example: $0 <VM_IP>"
   exit 1
 fi
 
