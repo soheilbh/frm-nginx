@@ -1,5 +1,7 @@
 # frm-nginx — Portainer only (no VM SSH)
 
+**Repo:** https://github.com/soheilbh/frm-nginx
+
 You only need **Portainer** + **Git** (GitLab or private GitHub). No shell on the VM, no `/opt` folders.
 
 The image **builds nginx config inside Docker** and **creates the TLS cert on first start** from `FRM_VM_IP`.
@@ -17,7 +19,7 @@ The image **builds nginx config inside Docker** and **creates the TLS cert on fi
 |--------|--------|
 | **Name** | `frm-nginx` |
 | **Build method** | **Git repository** |
-| **Repository URL** | Your GitLab or GitHub URL |
+| **Repository URL** | `https://github.com/soheilbh/frm-nginx` |
 | **Repository reference** | `main` (your branch) |
 | **Compose path** | `docker-compose.yml` |
 | **Authentication** | Token if private repo |

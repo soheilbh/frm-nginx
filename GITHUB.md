@@ -21,7 +21,7 @@ If the name `frm-nginx` is taken, use `frm-nginx-proxy` instead.
 
 ```bash
 cd frm-nginx
-git remote add origin https://github.com/YOUR_USER/frm-nginx.git
+git remote add origin https://github.com/soheilbh/frm-nginx.git
 git push -u origin main
 ```
 
@@ -29,6 +29,6 @@ git push -u origin main
 
 | Field | Value |
 |--------|--------|
-| Repository URL | `https://github.com/YOUR_USER/frm-nginx` |
+| Repository URL | `https://github.com/soheilbh/frm-nginx` |
 | Compose path | `docker-compose.yml` |
 | Env | `FRM_VM_IP=<your VM IP>` |
