@@ -1,0 +1,31 @@
+# Portainer-only deploy: Git pull + one env var. No VM shell, no host folders.
+#
+# Portainer → Stacks → Add stack → Git repository
+#   Compose path: docker-compose.yml
+#   Environment: FRM_VM_IP=10.52.10.50  (your VM IP)
+#
+# Deploy BEFORE frm-ai (creates network frm_ai_frm-ai-network).
+
+name: frm_nginx
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: frm-nginx:local
+    container_name: frm-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8443:8443"
+    environment:
+      FRM_VM_IP: ${FRM_VM_IP:?Set FRM_VM_IP to your VM IP in Portainer}
+    networks:
+      - frm-ai
+    restart: unless-stopped
+
+networks:
+  frm-ai:
+    name: frm_ai_frm-ai-network
+    driver: bridge
