@@ -5,7 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # Local tag only — not on Docker Hub. pull_policy avoids Portainer "Pull and redeploy" failing.
     image: frm-nginx:local
+    pull_policy: never
     container_name: frm-nginx
     ports:
       - "1443:1443"

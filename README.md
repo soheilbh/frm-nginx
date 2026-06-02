@@ -61,3 +61,20 @@ Writes `ssl/cert.pem` and `ssl/key.pem`. The default container path generates ce
 
 - Self-signed certificates are suitable for internal or private networks, not public internet trust.
 - If upstream services are not running, nginx will return **502 Bad Gateway** — expected until they are up.
+
+## Portainer (Git stack)
+
+This image is **built from the repo**, not pulled from a registry. The compose file sets `pull_policy: never` so `docker compose pull` does not try Docker Hub for `frm-nginx:local`.
+
+If redeploy fails with **pull access denied for frm-nginx**:
+
+1. Push the latest `docker-compose.yml` from this repo to GitHub.
+2. In Portainer → stack **frm-nginx** → **Pull and redeploy** (or **Update the stack** from Git).
+3. **Turn off** “Pull latest image” / “Re-pull images” if that option is shown — you need a **rebuild**, not a registry pull.
+4. If your Portainer version has no rebuild toggle, use **Editor** → save (no change) → deploy with build enabled, or run on the VM:
+
+   ```bash
+   cd /path/to/frm-nginx && FRM_VM_IP=<VM_IP> docker compose up -d --build
+   ```
+
+Deleting and recreating the stack “works” only because the first deploy **builds** the image; later “Pull and redeploy” tries to **pull** `frm-nginx` from Docker Hub and fails.
